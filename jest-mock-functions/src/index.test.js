@@ -73,3 +73,39 @@ describe("func contructors", () => {
   })
 });
 
+describe("the mock property", () => {
+  const myMock = jest.fn();
+
+  const a = new myMock();
+  const b = {};
+  const bound = myMock.bind(b);
+
+  beforeAll(() => {    
+    bound();    
+  });  
+  it("test func context (this)", () =>{
+    expect(myMock.mock.instances[0]).toBe(a)
+    expect(myMock.mock.instances[1]).toBe(b)
+  })
+});
+
+
+describe("mock return values", () => {
+  const myMock = jest.fn();
+
+  beforeAll(() => {    
+    myMock.mockReturnValueOnce(10).mockReturnValueOnce('x').mockReturnValue(true);
+    myMock()
+    myMock()
+    myMock()
+    myMock()
+    myMock()
+  });  
+  it("test func context (this)", () => {
+    expect(myMock.mock.results[0].value).toBe(10)
+    expect(myMock.mock.results[1].value).toBe('x')
+    expect(myMock.mock.results[2].value).toBe(true)
+    expect(myMock.mock.results[3].value).toBe(true)
+    expect(myMock.mock.results[4].value).toBe(true)
+  })
+});
